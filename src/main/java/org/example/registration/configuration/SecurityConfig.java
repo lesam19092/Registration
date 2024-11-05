@@ -2,7 +2,7 @@ package org.example.registration.configuration;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.registration.service.UserService;
+import org.example.registration.service.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class SecurityConfig {
 
     private final JwtRequestFilter jwtRequestFilter;
 
-    private final org.springframework.security.web.authentication.logout.LogoutHandler logoutHandler;
+    private final LogoutHandler logoutHandler;
 
 
     @Bean
@@ -48,7 +49,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout ->
-                        logout.logoutUrl("/api/logout")
+                        logout.logoutUrl("/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
                 );
