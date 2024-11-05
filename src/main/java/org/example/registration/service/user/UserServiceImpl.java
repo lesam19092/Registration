@@ -1,6 +1,9 @@
 package org.example.registration.service.user;
 
 import lombok.RequiredArgsConstructor;
+import org.example.registration.exception.CodeMismatchException;
+import org.example.registration.exception.PasswordMismatchException;
+import org.example.registration.model.dto.PasswordResetRequest;
 import org.example.registration.model.dto.RegistrationUserDto;
 import org.example.registration.model.entity.Role;
 import org.example.registration.model.entity.User;
@@ -51,5 +54,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsByUsername(String username) {
         return userRepository.findByName(username).isPresent();
+    }
+
+    @Override
+    public void resetPassword(PasswordResetRequest request) {
+        if (!"0000".equals(request.getConfirmationCode())) {
+            throw new CodeMismatchException("Invalid confirmation code");
+        }
+
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new PasswordMismatchException("Passwords do not match");
+        }
+
+        User user = findByUsername(request.getName());
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
     }
 }

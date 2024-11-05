@@ -40,5 +40,11 @@ public class RestExceptionHandle {
         return new ResponseEntity<>(new ApiError(HttpStatus.BAD_REQUEST.value(), "Пользователь c указанным именем не найдем "), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CodeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> handlePasswordMismatchException(CodeMismatchException ex) {
+        return new ResponseEntity<>(new ApiError(HttpStatus.BAD_REQUEST.value(), "Invalid confirmation code"), HttpStatus.BAD_REQUEST);
+    }
+
 
 }

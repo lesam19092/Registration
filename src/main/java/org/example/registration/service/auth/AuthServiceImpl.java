@@ -3,10 +3,7 @@ package org.example.registration.service.auth;
 import lombok.RequiredArgsConstructor;
 import org.example.registration.exception.DuplicateUsernameException;
 import org.example.registration.exception.PasswordMismatchException;
-import org.example.registration.model.dto.JwtRequest;
-import org.example.registration.model.dto.JwtResponse;
-import org.example.registration.model.dto.RegistrationUserDto;
-import org.example.registration.model.dto.UserDto;
+import org.example.registration.model.dto.*;
 import org.example.registration.model.entity.User;
 import org.example.registration.service.jwt.JwtTokenService;
 import org.example.registration.service.user.UserService;
@@ -42,6 +39,12 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userService.createNewUser(registrationUserDto);
         return ResponseEntity.ok(new UserDto(user.getId(), user.getUsername(), user.getEmail()));
+    }
+
+    @Override
+    public ResponseEntity<?> resetPassword(PasswordResetRequest request) {
+        userService.resetPassword(request);
+        return ResponseEntity.ok("Password reset successfully");
     }
 
 
