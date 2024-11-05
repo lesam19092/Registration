@@ -1,4 +1,4 @@
-package org.example.registration.service;
+package org.example.registration.service.logout;
 
 
 import jakarta.servlet.http.HttpServletRequest;
