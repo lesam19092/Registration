@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
         String password = authRequest.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         UserDetails userDetails = userService.loadUserByUsername(username);
-        String token = jwtTokenService.generateToken(userDetails, authRequest.getRememberMe() ? 30 * 24 * 60 : 1);
+        String token = jwtTokenService.generateToken(userDetails, authRequest.getRememberMe() ? 30 * 24 * 60 : 10);
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
