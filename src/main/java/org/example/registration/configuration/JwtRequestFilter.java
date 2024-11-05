@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.registration.utils.JwtTokenUtils;
+import org.example.registration.service.jwt.JwtTokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final JwtTokenUtils jwtTokenUtils;
+    private final JwtTokenService jwtTokenService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -33,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             try {
-                username = jwtTokenUtils.getUsername(jwt);
+                username = jwtTokenService.getUsername(jwt);
             } catch (ExpiredJwtException e) {
                 log.debug("Время жизни токена вышло");
             } catch (SignatureException e) {
@@ -42,14 +42,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtTokenUtils.isValid(jwt)) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtTokenService.isValid(jwt)) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     username,
                     null,
-                    jwtTokenUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+                    jwtTokenService.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }
         filterChain.doFilter(request, response);
     }
+
 }
