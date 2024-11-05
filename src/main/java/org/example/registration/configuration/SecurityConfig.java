@@ -29,9 +29,7 @@ public class SecurityConfig {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-
     private final JwtRequestFilter jwtRequestFilter;
-
     private final LogoutHandler logoutHandler;
 
 
