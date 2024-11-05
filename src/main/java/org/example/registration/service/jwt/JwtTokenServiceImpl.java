@@ -28,7 +28,6 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
     private String secret;
 
-
     private final TokenService tokenService;
 
     private final UserService userService;

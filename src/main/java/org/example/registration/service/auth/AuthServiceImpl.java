@@ -52,7 +52,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private void checkUsername(RegistrationUserDto registrationUserDto) {
-
         if (userService.existsByUsername(registrationUserDto.getUsername())) {
             throw new DuplicateUsernameException("Пользователь с таким именем уже существует");
         }
