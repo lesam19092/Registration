@@ -40,7 +40,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 log.debug("Подпись неправильная");
             }
         }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtTokenUtils.isValid(jwt)) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     username,
                     null,
