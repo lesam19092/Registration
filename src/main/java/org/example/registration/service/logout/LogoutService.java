@@ -1,6 +1,5 @@
 package org.example.registration.service.logout;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +17,16 @@ public class LogoutService implements LogoutHandler {
 
     private final TokenRepository tokenRepository;
 
-
     @Override
     public void logout(HttpServletRequest request,
                        HttpServletResponse response,
                        Authentication authentication) {
         String authHeader = request.getHeader("Authorization");
 
+        log.debug("Authorization header: {}", authHeader);
+
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            log.warn("Invalid Authorization header");
             return;
         }
 
@@ -33,8 +34,12 @@ public class LogoutService implements LogoutHandler {
         Token storedToken = tokenRepository.findByAccessToken(token).orElse(null);
 
         if (storedToken != null) {
+            log.debug("Token found: {}", storedToken);
             storedToken.setIsLoggedOut(true);
             tokenRepository.save(storedToken);
+            log.info("Token marked as logged out and saved");
+        } else {
+            log.warn("Token not found for token: {}", token);
         }
     }
 }
