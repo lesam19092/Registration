@@ -1,9 +1,9 @@
-FROM amazoncorretto:19-alpine AS layers
+FROM bellsoft/liberica-openjre-alpine:19 AS layers
 WORKDIR /application
-COPY build/libs/*.jar app.jar
+COPY target/*.jar app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
-FROM amazoncorretto:19-alpine
+FROM bellsoft/liberica-openjre-alpine:19
 VOLUME /tmp
 RUN adduser -S spring-user
 USER spring-user
