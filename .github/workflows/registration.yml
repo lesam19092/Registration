@@ -4,7 +4,8 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - registration/.github/workflows/registration.yml
+      - .github/workflows/registration.yml
+      - registration/**
 
 jobs:
   build:
