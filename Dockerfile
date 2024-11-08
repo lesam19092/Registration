@@ -12,4 +12,4 @@ COPY --from=layers /application/spring-boot-loader/ ./
 COPY --from=layers /application/snapshot-dependencies/ ./
 COPY --from=layers /application/application/ ./
 
-ENTRYPOINT ["java", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java","-jar","/registration.jar"]
