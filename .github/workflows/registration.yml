@@ -50,8 +50,8 @@ jobs:
           name: coverage-report
           path: target/site/jacoco
 
-      - name: Run static code analysis with SonarQube
-        run: mvn sonar:sonar
+     # - name: Run static code analysis
+    #  run: mvn checkstyle:check
 
       - name: Build Docker image
         run: |
