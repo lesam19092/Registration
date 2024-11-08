@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - registration/.github/workflows/registration.yml
+      - registration/**
 
 jobs:
   build:
