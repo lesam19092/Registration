@@ -50,8 +50,8 @@ jobs:
           name: coverage-report
           path: target/site/jacoco
 
-     # - name: Run static code analysis
-    #  run: mvn checkstyle:check
+      # - name: Run static code analysis
+      #  run: mvn checkstyle:check
 
       - name: Build Docker image
         run: |
@@ -65,5 +65,8 @@ jobs:
           password: ${{ secrets.CR_PAT }}
       - name: Push Docker image to GitHub Container Registry
         run: docker push ghcr.io/lesam19092/fintech:latest
+
+      - name: Verify Docker image
+        run: docker images ghcr.io/lesam19092/fintech:latest
 
 
