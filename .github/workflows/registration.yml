@@ -55,7 +55,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/lesam19092/fintech:latest .  # Tag for GitHub Container Registry
+          docker build -t ghcr.io/lesam19092/Registration:latest .  # Tag for GitHub Container Registry
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -64,9 +64,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.CR_PAT }}
       - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/lesam19092/fintech:latest
+        run: docker push ghcr.io/lesam19092/Registration:latest
 
       - name: Verify Docker image
-        run: docker images ghcr.io/lesam19092/fintech:latest
+        run: docker images ghcr.io/lesam19092/Registration:latest
 
 
