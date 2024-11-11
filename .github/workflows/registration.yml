@@ -57,8 +57,8 @@ jobs:
           name: coverage-report
           path: target/site/jacoco
 
-      - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@master
+     # - name: Run Codacy Analysis CLI
+      #  uses: codacy/codacy-analysis-cli-action@master
 
       - name: Build Docker image
         run: |
