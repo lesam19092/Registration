@@ -78,7 +78,7 @@ jobs:
             print("Insufficient Coverage!")
             sys.exit(-1) # Cause Status Check Failure due to noncompliant coverage
           sys.exit(0)
-          shell: python
+        shell: python
 
 
 
