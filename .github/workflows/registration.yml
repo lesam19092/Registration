@@ -13,7 +13,6 @@ on:
     paths:
       - .github/workflows/registration.yml
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,51 +41,18 @@ jobs:
       - name: Run tests
         run: mvn test
 
-
-      - name: Generate Coverage Report
-        run: |
-          mvn -B package --file pom.xml
-
-      - name: Upload Report
-        uses: actions/upload-artifact@v3
-        with:
-            name: jacoco-report
-            path: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+      - name: Run Coverage
+        run: mvn jacoco:report
 
       - name: Add coverage to PR
         id: jacoco
-        uses: madrapps/jacoco-report@v1.2
+        uses: madrapps/jacoco-report@v1.7.1
         with:
-          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          paths:
+            - ${{ github.workspace }}/**/target/site/jacoco/jacoco.xml
           token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 1
-          min-coverage-changed-files: 1
-          title: Code Coverage
-
-      - name: Save Coverage To Environment Variable
-        run: |
-          echo "TOTAL_COVERAGE=${{ steps.jacoco.outputs.coverage-overall }}" >> $GITHUB_ENV
-          echo "CHANGED_FILES_COVERAGE=${{ steps.jacoco.outputs.coverage-changed-files }}" >> $GITHUB_ENV
-
-      - name: Print & Check Coverage Info
-        run: |
-          import os
-          import sys
-          print("Total Coverage: " + str(os.environ["TOTAL_COVERAGE"]))
-          print("Changed Files Coverage: " + str(os.environ["CHANGED_FILES_COVERAGE"]))
-          if float(os.environ["TOTAL_COVERAGE"]) < 1 or float(os.environ["CHANGED_FILES_COVERAGE"]) < 1:
-            print("Insufficient Coverage!")
-            sys.exit(-1) # Cause Status Check Failure due to noncompliant coverage
-          sys.exit(0)
-        shell: python
-
-
-
-      # - name: Checkout code
-      #   uses: actions/checkout@main
-
-      # - name: Run Codacy Analysis CLI
-      #   uses: codacy/codacy-analysis-cli-action@master
+          min-coverage-overall: 40
+          min-coverage-changed-files: 60
 
       - name: Build Docker image
         run: |
@@ -98,10 +64,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.CR_PAT }}
+
       - name: Push Docker image to GitHub Container Registry
         run: docker push ghcr.io/lesam19092/fintech:latest
 
       - name: Verify Docker image
         run: docker images ghcr.io/lesam19092/fintech:latest
-
-
