@@ -48,13 +48,15 @@ jobs:
 
       - name: Upload test coverage
         id: jacoco
-        uses: madrapps/jacoco-report@v1.7.1
+        uses: madrapps/jacoco-report@v1.6.1
+        if: ( github.event_name != 'workflow_dispatch' )
         with:
-          paths: |
-            ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
           token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 1
-          min-coverage-changed-files: 1
+          min-coverage-overall: 30
+          min-coverage-changed-files: 30
+          title: Code Coverage
+          update-comment: true
 
       - name: Upload test coverage report
         uses: actions/upload-artifact@v3
