@@ -65,11 +65,11 @@ jobs:
           path: target/site/jacoco
 
 
-      - name: Checkout code
-        uses: actions/checkout@main
+     # - name: Checkout code
+      #  uses: actions/checkout@main
 
-      - name: Run Codacy Analysis CLI
-        uses: codacy/codacy-analysis-cli-action@master
+     # - name: Run Codacy Analysis CLI
+     #   uses: codacy/codacy-analysis-cli-action@master
 
       - name: Build Docker image
         run: |
