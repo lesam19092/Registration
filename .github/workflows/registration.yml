@@ -42,7 +42,14 @@ jobs:
         run: mvn test
 
       - name: Calculate test coverage
-        run: mvn jacoco:report
+        id: jacoco
+        uses: madrapps/jacoco-report@v1.7.1
+        with:
+          paths: |
+            ${{ github.workspace }}/target/site/jacoco/jacoco.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 1
+          min-coverage-changed-files: 1
 
       - name: Upload test coverage report
         uses: actions/upload-artifact@v3
@@ -50,8 +57,8 @@ jobs:
           name: coverage-report
           path: target/site/jacoco
 
-      # - name: Run static code analysis
-      #  run: mvn checkstyle:check
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@master
 
       - name: Build Docker image
         run: |
