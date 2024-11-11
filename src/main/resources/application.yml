@@ -19,3 +19,7 @@ jwt:
 
 server:
   port: 7070
+
+duration:
+  shortTime: 10
+  longTime: 43200
