@@ -1,6 +1,6 @@
 FROM bellsoft/liberica-openjre-alpine:19 AS layers
 WORKDIR /application
-COPY target/*.jar app.jar
+COPY target/*.jar registration.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
 FROM bellsoft/liberica-openjre-alpine:19
