@@ -41,7 +41,11 @@ jobs:
       - name: Run tests
         run: mvn test
 
+
       - name: Calculate test coverage
+        run: mvn jacoco:report
+
+      - name: Upload test coverage
         id: jacoco
         uses: madrapps/jacoco-report@v1.7.1
         with:
@@ -57,8 +61,12 @@ jobs:
           name: coverage-report
           path: target/site/jacoco
 
-     # - name: Run Codacy Analysis CLI
-      #  uses: codacy/codacy-analysis-cli-action@master
+
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@master
 
       - name: Build Docker image
         run: |
