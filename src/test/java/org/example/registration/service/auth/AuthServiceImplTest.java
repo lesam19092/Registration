@@ -4,6 +4,7 @@ package org.example.registration.service.auth;
 import org.example.registration.model.dto.*;
 import org.example.registration.model.entity.User;
 import org.example.registration.service.jwt.JwtTokenService;
+import org.example.registration.service.token.TokenService;
 import org.example.registration.service.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -22,10 +24,17 @@ class AuthServiceImplTest {
 
 
     @Mock
-    private UserService userService;
+    private AuthenticationManager authenticationManager;
 
     @InjectMocks
     private AuthServiceImpl authService;
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private TokenService tokenService;
+
 
     @Mock
     private JwtTokenService jwtTokenService;
