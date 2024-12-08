@@ -2,6 +2,7 @@ package org.example.registration.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.registration.configuration.DurationConfig;
 import org.example.registration.exception.DuplicateUsernameException;
 import org.example.registration.exception.PasswordMismatchException;
 import org.example.registration.model.dto.*;
@@ -21,6 +22,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserService userService;
     private final JwtTokenService jwtTokenService;
     private final AuthenticationManager authenticationManager;
+    private final DurationConfig durationConfig;
 
     @Override
     public ResponseEntity<?> createAuthToken(JwtRequest authRequest) {
@@ -29,8 +31,12 @@ public class AuthServiceImpl implements AuthService {
         String username = authRequest.getUsername();
         String password = authRequest.getPassword();
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
         UserDetails userDetails = userService.loadUserByUsername(username);
-        String token = jwtTokenService.generateToken(userDetails, authRequest.getRememberMe() ? 30 * 24 * 60 : 10);
+        String token = jwtTokenService.generateToken(userDetails,
+                authRequest.getRememberMe() ? durationConfig.getLongTime()
+                        : durationConfig.getShortTime());
+
         log.info("Auth token created successfully for user: {}", username);
         return ResponseEntity.ok(new JwtResponse(token));
     }

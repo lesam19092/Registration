@@ -23,16 +23,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    private static final int BEARER_PREFIX_LENGTH = 7;
+    private static final String BEARER_PREFIX = "Bearer ";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+
+
     private final JwtTokenService jwtTokenService;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader(AUTHORIZATION_HEADER);
         String username = null;
         String jwt = null;
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
+        if (authHeader != null && authHeader.startsWith(BEARER_PREFIX)) {
+            jwt = authHeader.substring(BEARER_PREFIX_LENGTH);
             try {
                 username = jwtTokenService.getUsername(jwt);
             } catch (ExpiredJwtException e) {
